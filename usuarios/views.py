@@ -84,11 +84,10 @@ def ver_perfil(request, id):
                 usuario.set_password(password1)
                 update_session_auth_hash(request, usuario)  # Mantener la sesión activa
                 login(request, usuario)  # Autenticar al usuario automáticamente
+                usuario.save()
+                messages.success(request, '¡Cambios guardados con éxito!')
+                return redirect(reverse("dashboard"))
             else:
                 messages.warning(request, '¡Las contraseñas no coinciden!')
-
-        usuario.save()
-        messages.success(request, '¡Cambios guardados con éxito!')
-        return redirect(reverse("dashboard"))
 
     return render(request, "ver-perfil.html", {"usuario": usuario})
