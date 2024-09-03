@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+import os
 
 
 # Create your models here.
@@ -24,5 +25,19 @@ class Foto(models.Model):
 
     def __str__(self):
         return f"Foto en {self.album.titulo} - {self.id}"
+    
+    def save(self, *args, **kwargs):
+        if self.pk:  # Si el objeto ya existe, es una actualización
+            old_instance = Foto.objects.get(pk=self.pk)
+            if old_instance.imagen and self.imagen != old_instance.imagen:
+                if os.path.isfile(old_instance.imagen.path):
+                    os.remove(old_instance.imagen.path)
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.imagen:
+            if os.path.isfile(self.imagen.path):
+                os.remove(self.imagen.path)
+        super().delete(*args, **kwargs)
 
 

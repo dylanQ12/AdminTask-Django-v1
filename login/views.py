@@ -15,7 +15,7 @@ def loginView(request):
             # messages.success(request, f'¡Bienvenido de nuevo {user.first_name}!')
             return redirect("dashboard")
         else:
-            messages.error(request, '¡Usuario o contraseña incorrectos!')
+            messages.error(request, "¡Usuario o contraseña incorrectos!")
             return redirect("login")
     return render(request, "login.html")
 
